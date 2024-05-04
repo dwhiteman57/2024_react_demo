@@ -1,15 +1,42 @@
 import { getImage } from "~/server/queries";
+import {clerkClient} from "@clerk/nextjs/server";
 
 export default async function FullPageImageView(props: {id: number}) {
   const image = await getImage(props.id);
-  return (
-    <div className="flex w-full h-full min-w-0">
-      <div className="flex-shrink flex items-center justify-center">
-        <img src={image.url} alt="" className="flex-shrink object-contain"/>
-      </div>
+  const uploaderInfo = await clerkClient.users.getUser(image.userId);
 
-      <div className="w-48 flex flex-col flex-shrink-0 border-l">
-        <div className="text-xl font-bold">{image.name}</div>
+  return (
+    <div className="flex h-full w-screen min-w-0 items-center justify-center text-white">
+      <div className="flex-shrink flex-grow">
+        <img src={image.url} className="object-contain" alt={image.name}/>
+      </div>
+      <div className="flex h-full w-56 flex-shrink-0 flex-col border-l">
+        <div className="border-b p-2 text-center text-xl">{image.name}</div>
+
+        <div className="p-2">
+          <div>Uploaded By:</div>
+          <div>{uploaderInfo.fullName}</div>
+        </div>
+
+        <div className="p-2">
+          <div>Created On:</div>
+          <div>{image.createdAt.toLocaleDateString()}</div>
+        </div>
+
+        {/*<div className="p-2">*/}
+        {/*  <form*/}
+        {/*    action={async () => {*/}
+        {/*      "use server";*/}
+
+        {/*      await deleteImage(idAsNumber);*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    <Button type="submit" variant="destructive">*/}
+        {/*      Delete*/}
+        {/*    </Button>*/}
+        {/*  </form>*/}
+        {/*</div>*/}
+
       </div>
     </div>
   );
