@@ -3,6 +3,7 @@ import "@uploadthing/react/styles.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { TopNav } from "./_components/topnav";
+import { Toaster } from "~/components/ui/sonner";
 import React from "react";
 
 
@@ -35,6 +36,7 @@ export default function RootLayout({
           </div>
           {modal}
           <div id="modal-root" />
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>
